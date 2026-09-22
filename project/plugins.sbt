@@ -1,0 +1,2 @@
+// project/plugins.sbt
+addSbtPlugin("org.jetbrains.scala" % "sbt-ide-settings" % "1.1.4")

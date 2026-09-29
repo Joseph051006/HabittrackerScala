@@ -1,5 +1,6 @@
 package org.habittracker.application
 
+import scala.annotation.tailrec
 import scala.{:+, ::, *}
 import scala.io.StdIn.{readInt, readLine}
 
@@ -31,11 +32,11 @@ def main(): Unit=
 
 def decision(prompt: String): Unit=
   prompt match {
-      case "1"  => throw NotImplementedError("Under Development")
-      case "2"  => habits = habits :+ createHabit(habits); main()
-      case _    => throw NotImplementedError("Under Development")
+      case "1"  => readHabit(habits)
+      case "2"  => habits = habits :+ createHabit(habits)
+      case _    => main()
   }
-
+  main()
 def createHabit(habits: List[Habit]) : Habit =
   val habit: Habit = Habit(
     name    = readLine("What Habit?"),
@@ -48,5 +49,19 @@ def createHabit(habits: List[Habit]) : Habit =
   )
   habit
 
+def readHabit(habits: List[Habit]): Unit =
+  habits match
+    case Nil          => ()
+    case head :: tail =>
+      createTable(head)
+      readHabit(tail)
 
-
+def createTable(habit: Habit): Unit =
+  println("=" * 60)
+  println(habit.productElementNames.mkString(" | "))
+  println(habit.productIterator.map {
+    case Some(v) => v
+    case None    => "-"
+    case other   => other
+  }.mkString(" | "))
+  println("=" * 60)

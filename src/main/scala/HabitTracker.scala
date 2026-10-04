@@ -14,7 +14,7 @@ def createHabit() : Option[Habit] =
   else
     Some(
       Habit(
-        name    = name, 
+        name    = name,
         place   = readRequired("Where to Execute? "),
         when    = readOptional("When to Execute? "),
         success = 0,
@@ -46,8 +46,14 @@ def deleteHabit(habits: List[Habit], index: Int): List[Habit] =
   habits.patch(index, Nil, 1)
 // returns the 0-based index of the chosen habit, or None on invalid input
 def selectHabit(habits: List[Habit]): Option[Int] =
-  habits.zipWithIndex.foreach { case (h, i) => println(s"${i + 1}) ${h.name}") }
-  readLine("Which number? ").toIntOption.map(_ - 1).filter(habits.indices.contains)
+  if habits.isEmpty then
+    println("No habits yet.")
+    None
+  else
+    habits.zipWithIndex.foreach { case (h, i) => println(s"${i + 1}) ${h.name}") }
+    val choice = readIndex("Which number? ", habits.size)
+    if choice.isEmpty then println("Invalid number.")
+    choice
 
 def updateHabit(habits: List[Habit], index: Int): List[Habit]  =
   val old = habits(index)

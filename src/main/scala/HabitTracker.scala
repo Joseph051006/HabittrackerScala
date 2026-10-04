@@ -6,17 +6,23 @@ import scala.io.StdIn.readLine
 var habits: List[Habit] = List.empty
 
 
-def createHabit(habits: List[Habit]) : Habit =
-  val habit: Habit = Habit(
-    name    = readLine("What Habit?"),
-    place   = readLine("Where to Execute?"),
-    when    = Option(readLine("When to Execute?")),
-    success = 0,
-    failure = 0,
-    tag     = Option(readLine("Which tag to append?")), // WIP
-    reps    = 0
-  )
-  habit
+def createHabit() : Option[Habit] =
+  val name = readRequired("What Habit? ")
+  if habits.exists(_.name.equalsIgnoreCase(name)) then
+    println("Habit already exists")
+    None
+  else
+    Some(
+      Habit(
+        name    = name, 
+        place   = readRequired("Where to Execute? "),
+        when    = readOptional("When to Execute? "),
+        success = 0,
+        failure = 0,
+        tag     = readOptional("Which tag to append? "),
+        reps    = 0
+      )
+    )
 
 @tailrec
 def readHabit(habits: List[Habit]): Unit =

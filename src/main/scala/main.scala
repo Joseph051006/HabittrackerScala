@@ -19,7 +19,7 @@ def main(): Unit=
 def decision(prompt: String): Unit=
   prompt match {
       case "1"  => readHabit(habits)
-      case "2"  => habits = habits :+ createHabit(habits)
+      case "2"  => createHabit().foreach(h => habits = habits :+ h)
       case "3"  => selectHabit(habits).foreach(h => habits = deleteHabit(habits, h))
       case "4"  => selectHabit(habits).foreach(h => habits = updateHabit(habits, h))
       case "5"  => selectHabit(habits).foreach(h => habits = trackHabit(habits, h))

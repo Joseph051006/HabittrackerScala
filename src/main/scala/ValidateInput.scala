@@ -13,3 +13,10 @@ def readRequired(prompt: String): String =
     case Some(_) => println("This Field is required")
       readRequired(prompt)
     case None => sys.exit(0)
+  }
+
+def readIndex(prompt: String, size: Int): Option[Int] =
+  Option(readLine(prompt))
+    .flatMap(_.trim.toIntOption)
+    .map(_ - 1)
+    .filter(i => i >= 0 && i < size)

@@ -18,13 +18,14 @@ var habits : List[Habit] = List.empty
 
 @main
 def main(): Unit=
+  println("=========================")
   println("Dear User, what would you like to organize?")
   println("1) Habits Overview")
   println("2) Create Habits")
   println("3) Delete Habits")
   println("4) Update Habits")
   println("5) Track Habits")
-  println("WIP")
+  println("6) Filter Habits")
   println("=========================")
   decision(readLine())
 
@@ -35,6 +36,7 @@ def decision(prompt: String): Unit=
       case "3"  => selectHabit(habits).foreach(h => habits = deleteHabit(habits, h))
       case "4"  => selectHabit(habits).foreach(h => habits = updateHabit(habits, h))
       case "5"  => selectHabit(habits).foreach(h => habits = trackHabit(habits, h))
+      case "6"  => readHabit(filterByValue(habits, readLine("Filter by Which?(Tag, Place, Time(When) and Name)")))
       case _    => main()
   }
   main()
@@ -54,7 +56,7 @@ def createHabit(habits: List[Habit]) : Habit =
 @tailrec
 def readHabit(habits: List[Habit]): Unit =
   habits match
-    case Nil          => ()
+    case Nil          =>
     case head :: tail =>
       createTable(head)
       readHabit(tail)
@@ -120,4 +122,24 @@ def gotExecuted(): Boolean =
     case "Y" | "y" | ""   => true
     case "N" | "n"        => false
     case _                => gotExecuted()
+  }
+
+@tailrec
+def filterByValue(habits: List[Habit], field: String): List[Habit] =
+  field.trim.toLowerCase match {
+    case "tag" =>
+      val tagFilter = readLine("Which Tag?: ")
+      habits.filter(_.tag.exists(_.equalsIgnoreCase(tagFilter)))
+    case "place" =>
+      val placeFilter = readLine("Which Place?: ")
+      habits.filter(_.place.equalsIgnoreCase(placeFilter))
+    case "when" | "time" =>
+      val timeFilter = readLine("When?: ")
+      habits.filter(_.when.exists(_.equalsIgnoreCase(timeFilter)))
+    case "name" =>
+      val nameFilter = readLine("Which Name?: ")
+      habits.filter(_.name.equalsIgnoreCase(nameFilter))
+    case _ =>
+      println("You can filter by Tag, Place, Time(When) and Name")
+      filterByValue(habits, readLine("Filter by Which?: "))
   }

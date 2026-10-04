@@ -14,13 +14,17 @@ def createHabit() : Option[Habit] =
   else
     Some(
       Habit(
-        name    = name,
-        place   = readRequired("Where to Execute? "),
-        when    = readOptional("When to Execute? "),
-        success = 0,
-        failure = 0,
-        tag     = readOptional("Which tag to append? "),
-        reps    = 0
+        name         = name,
+        place        = readRequired("Where to Execute? "),
+        when         = readOptional("When to Execute? "),
+        success      = 0,
+        failure      = 0,
+        tag          = readOptional("Which tag to append? "),
+        reps         = 0,
+        stackedAfter = readOptional("After which habit or event? "),
+        reward       = readOptional("Reward? "),
+        identity     = readOptional("Who do you become? "),
+        miniVersion  = readOptional("Two-minute version? ")
       )
     )
 
@@ -47,9 +51,9 @@ def deleteHabit(habits: List[Habit], index: Int): List[Habit] =
 
 def removeHabit(index: Int): Unit =
   val habit = habits(index)
-  if confirm(s"Delete ${habit.name}? (Y/n) ") then 
+  if confirm(s"Delete ${habit.name}? (Y/n) ") then
     habits = deleteHabit(habits, index)
-// returns the 0-based index of the chosen habit, or None on invalid input 
+// returns the 0-based index of the chosen habit, or None on invalid input
 def selectHabit(habits: List[Habit]): Option[Int] =
   if habits.isEmpty then
     println("No habits yet.")
@@ -63,10 +67,14 @@ def selectHabit(habits: List[Habit]): Option[Int] =
 def updateHabit(habits: List[Habit], index: Int): List[Habit]  =
   val old = habits(index)
   val updated = old.copy(
-    name  = ask("name:    ", old.name),
-    place = ask("place:   ", old.place),
-    when  = askOpt("When: ", old.when),
-    tag   = askOpt("Tag:  ", old.tag)
+    name         = ask("Name", old.name),
+    place        = ask("Place", old.place),
+    when         = askOpt("When", old.when),
+    tag          = askOpt("Tag", old.tag),
+    stackedAfter = askOpt("After", old.stackedAfter),
+    reward       = askOpt("Reward", old.reward),
+    identity     = askOpt("Identity", old.identity),
+    miniVersion  = askOpt("Two-minute version", old.miniVersion)
   )
   habits.updated(index, updated)
 

@@ -22,18 +22,17 @@ def main(): Unit=
   println("Dear User, what would you like to organize?")
   println("1) Habits Overview")
   println("2) Create Habits")
-  println("WIP")
+  println("3) Delete Habits")
   println("WIP")
   println("WIP")
   println("=========================")
   decision(readLine())
-  
-
 
 def decision(prompt: String): Unit=
   prompt match {
       case "1"  => readHabit(habits)
       case "2"  => habits = habits :+ createHabit(habits)
+      case "3"  => selectHabit(habits).foreach(h => habits = deleteHabit(habits, h))
       case _    => main()
   }
   main()
@@ -49,6 +48,7 @@ def createHabit(habits: List[Habit]) : Habit =
   )
   habit
 
+@tailrec
 def readHabit(habits: List[Habit]): Unit =
   habits match
     case Nil          => ()
@@ -65,3 +65,10 @@ def createTable(habit: Habit): Unit =
     case other   => other
   }.mkString(" | "))
   println("=" * 60)
+
+def deleteHabit(habits: List[Habit] ,habit: Habit): List[Habit] =
+  habits.filterNot(_ == habit)
+
+def selectHabit(habits: List[Habit]): Option[Habit] =
+  habits.zipWithIndex.foreach { case (h, i) => println(s"${i + 1}) ${h.name}") }
+  readLine("Which number? ").toIntOption.flatMap(n => habits.lift(n - 1))

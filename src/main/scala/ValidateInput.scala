@@ -20,3 +20,12 @@ def readIndex(prompt: String, size: Int): Option[Int] =
     .flatMap(_.trim.toIntOption)
     .map(_ - 1)
     .filter(i => i >= 0 && i < size)
+
+@tailrec
+def confirm(question: String): Boolean =
+  Option(readLine(question)).map(_.trim.toLowerCase()) match {
+    case Some("y") | Some("") => true
+    case Some("n") => false
+    case Some(_) => confirm(question)
+    case None => false
+  }

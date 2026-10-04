@@ -44,7 +44,12 @@ def createTable(habit: Habit): Unit =
 
 def deleteHabit(habits: List[Habit], index: Int): List[Habit] =
   habits.patch(index, Nil, 1)
-// returns the 0-based index of the chosen habit, or None on invalid input
+
+def removeHabit(index: Int): Unit =
+  val habit = habits(index)
+  if confirm(s"Delete ${habit.name}? (Y/n) ") then 
+    habits = deleteHabit(habits, index)
+// returns the 0-based index of the chosen habit, or None on invalid input 
 def selectHabit(habits: List[Habit]): Option[Int] =
   if habits.isEmpty then
     println("No habits yet.")
@@ -77,7 +82,8 @@ def askOpt(label: String, current: Option[String]) =
 
 def trackHabit(habits: List[Habit], index: Int): List[Habit] =
   val old = habits(index)
-  if !gotExecuted() then {
+  val executed = confirm("Got Excecuted? (Y/n)")
+  if !executed then {
     val updated = old.copy(
       failure = old.failure + 1,
       success = old.success + 0,

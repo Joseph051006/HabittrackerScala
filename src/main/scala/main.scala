@@ -1,7 +1,6 @@
 package org.habittracker.application
 
 import scala.annotation.tailrec
-import scala.{:+, ::, *}
 import scala.io.StdIn.{readInt, readLine}
 
 case class Habit
@@ -24,6 +23,7 @@ def main(): Unit=
   println("2) Create Habits")
   println("3) Delete Habits")
   println("4) Update Habits")
+  println("5) Track Habits")
   println("WIP")
   println("=========================")
   decision(readLine())
@@ -34,6 +34,7 @@ def decision(prompt: String): Unit=
       case "2"  => habits = habits :+ createHabit(habits)
       case "3"  => selectHabit(habits).foreach(h => habits = deleteHabit(habits, h))
       case "4"  => selectHabit(habits).foreach(h => habits = updateHabit(habits, h))
+      case "5"  => selectHabit(habits).foreach(h => habits = trackHabit(habits, h))
       case _    => main()
   }
   main()
@@ -78,10 +79,10 @@ def selectHabit(habits: List[Habit]): Option[Int] =
 def updateHabit(habits: List[Habit], index: Int): List[Habit]  =
   val old = habits(index)
   val updated = old.copy(
-    name  = ask("name: ", old.name),
-    place = ask("place: ", old.place),
+    name  = ask("name:    ", old.name),
+    place = ask("place:   ", old.place),
     when  = askOpt("When: ", old.when),
-    tag   = askOpt("Tag: ", old.tag)
+    tag   = askOpt("Tag:  ", old.tag)
   )
   habits.updated(index, updated)
 
@@ -95,3 +96,28 @@ def askOpt(label: String, current: Option[String]) =
     case ""     => current
     case input  => Some(input)
 
+def trackHabit(habits: List[Habit], index: Int): List[Habit] =
+  val old = habits(index)
+  if !gotExecuted() then {
+    val updated = old.copy(
+      failure = old.failure + 1,
+      success = old.success + 0,
+      reps    = old.reps    + 1
+    )
+    habits.updated(index, updated)
+  } else {
+    val updated = old.copy(
+      failure = old.failure + 0,
+      success = old.success + 1,
+      reps    = old.reps    + 1
+    )
+    habits.updated(index, updated)
+  }
+
+@tailrec
+def gotExecuted(): Boolean =
+  readLine("Got Executed? (Y/n)") match {
+    case "Y" | "y" | ""   => true
+    case "N" | "n"        => false
+    case _                => gotExecuted()
+  }

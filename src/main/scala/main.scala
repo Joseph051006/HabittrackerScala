@@ -9,8 +9,8 @@ case class Habit
     name    : String,
     place   : String,
     when    : Option[String],
-    success : Option[Int],
-    failure : Option[Int],
+    success : Int,
+    failure : Int,
     tag     : Option[String],
     reps    : Int
   )
@@ -23,7 +23,7 @@ def main(): Unit=
   println("1) Habits Overview")
   println("2) Create Habits")
   println("3) Delete Habits")
-  println("WIP")
+  println("4) Update Habits")
   println("WIP")
   println("=========================")
   decision(readLine())
@@ -33,18 +33,20 @@ def decision(prompt: String): Unit=
       case "1"  => readHabit(habits)
       case "2"  => habits = habits :+ createHabit(habits)
       case "3"  => selectHabit(habits).foreach(h => habits = deleteHabit(habits, h))
+      case "4"  => selectHabit(habits).foreach(h => habits = updateHabit(habits, h))
       case _    => main()
   }
   main()
+
 def createHabit(habits: List[Habit]) : Habit =
   val habit: Habit = Habit(
     name    = readLine("What Habit?"),
     place   = readLine("Where to Execute?"),
     when    = Option(readLine("When to Execute?")),
-    success = Option(0),
-    failure = Option(0),
-    tag = Option(readLine("Which tag to append?")), // WIP
-    reps = 0
+    success = 0,
+    failure = 0,
+    tag     = Option(readLine("Which tag to append?")), // WIP
+    reps    = 0
   )
   habit
 
@@ -66,9 +68,30 @@ def createTable(habit: Habit): Unit =
   }.mkString(" | "))
   println("=" * 60)
 
-def deleteHabit(habits: List[Habit] ,habit: Habit): List[Habit] =
-  habits.filterNot(_ == habit)
-
-def selectHabit(habits: List[Habit]): Option[Habit] =
+def deleteHabit(habits: List[Habit], index: Int): List[Habit] =
+  habits.patch(index, Nil, 1)
+// returns the 0-based index of the chosen habit, or None on invalid input
+def selectHabit(habits: List[Habit]): Option[Int] =
   habits.zipWithIndex.foreach { case (h, i) => println(s"${i + 1}) ${h.name}") }
-  readLine("Which number? ").toIntOption.flatMap(n => habits.lift(n - 1))
+  readLine("Which number? ").toIntOption.map(_ - 1).filter(habits.indices.contains)
+
+def updateHabit(habits: List[Habit], index: Int): List[Habit]  =
+  val old = habits(index)
+  val updated = old.copy(
+    name  = ask("name: ", old.name),
+    place = ask("place: ", old.place),
+    when  = askOpt("When: ", old.when),
+    tag   = askOpt("Tag: ", old.tag)
+  )
+  habits.updated(index, updated)
+
+def ask(label: String, current: String) =
+  readLine(s"$label [$current]: ") match
+    case ""     => current
+    case input  => input
+
+def askOpt(label: String, current: Option[String]) =
+  readLine(s"$label  [${current.getOrElse("-")}]: ") match
+    case ""     => current
+    case input  => Some(input)
+

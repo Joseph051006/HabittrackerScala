@@ -7,3 +7,6 @@ lazy val root = (project in file("."))
     name := "HabitTracker",
     idePackagePrefix := Some("org.habittracker.application")
   )
+libraryDependencies ++= Seq(
+  "org.typelevel" %% "case-insensitive" % "1.5.0"
+)

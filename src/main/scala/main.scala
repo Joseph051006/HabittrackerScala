@@ -1,7 +1,6 @@
 package org.habittracker.application
 
-import scala.annotation.tailrec
-import scala.io.StdIn.{readInt, readLine}
+import scala.io.StdIn.readLine
 
 @main
 def main(): Unit=

@@ -1,7 +1,6 @@
 package org.habittracker.application
 
-import scala.annotation.tailrec
-import scala.io.StdIn.{readInt, readLine}
+import scala.io.StdIn.readLine
 
 @main
 def main(): Unit=
@@ -13,6 +12,9 @@ def main(): Unit=
   println("4) Update Habits")
   println("5) Track Habits")
   println("6) Filter Habits")
+  println("7) Daily Plan")
+  println("8) Habit Scorecard")
+  println("0) Exit")
   println("=========================")
   decision(readLine())
 
@@ -24,6 +26,9 @@ def decision(prompt: String): Unit=
       case "4"  => selectHabit(habits).foreach(h => habits = updateHabit(habits, h))
       case "5"  => selectHabit(habits).foreach(h => habits = trackHabit(habits, h))
       case "6"  => readHabit(filterByValue(habits, readLine("Filter by Which?(Tag, Place, Time(When) and Name)")))
+      case "7"  => dailyPlan(habits)
+      case "8"  => scorecard(habits)
+      case "0"  => sys.exit(0)
       case _    => main()
   }
   main()

@@ -42,3 +42,6 @@ def easyFallback(habit: Habit): Boolean =
     confirm(s"Did you at least do the two-minute version ($m)? (Y/n) ")
   )
 
+def scorecard(list: List[Habit]): Unit =
+  if list.isEmpty then println("No habits yet.")
+  else list.sortBy(h => -successRate(h)).foreach(satisfying)

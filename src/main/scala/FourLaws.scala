@@ -9,3 +9,7 @@ def intention(habit: Habit): String =
 def dailyPlan(list: List[Habit]): Unit =
   if list.isEmpty then println("No habits yet.")
   else list.foreach(h => println(intention(h)))
+
+def attractive(habit: Habit): Unit =
+  habit.identity.foreach(i => println(s"Vote for: $i"))
+  habit.reward.foreach(r => println(s"Reward afterwards: $r"))

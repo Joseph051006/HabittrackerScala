@@ -90,6 +90,7 @@ def askOpt(label: String, current: Option[String]) =
 
 def trackHabit(habits: List[Habit], index: Int): List[Habit] =
   val old = habits(index)
+  attractive(old)
   val executed = confirm("Got Excecuted? (Y/n)")
   if !executed then {
     val updated = old.copy(

@@ -27,3 +27,9 @@ def record(habit: Habit, executed: Boolean): Habit =
       reps = habit.reps + 1,
       missedInRow = habit.missedInRow + 1
     )
+
+def satisfying(habit: Habit): Unit =
+  println(s"${habit.name}: ${habit.success}/${habit.reps} (${successRate(habit)}%)")
+
+def successRate(habit: Habit): Int =
+  if habit.reps == 0 then 0 else habit.success * 100 / habit.reps

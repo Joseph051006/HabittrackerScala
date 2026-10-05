@@ -93,6 +93,7 @@ def trackHabit(habits: List[Habit], index: Int): List[Habit] =
   attractive(old)
   val executed = confirm("Got Excecuted? (Y/n)")
   val updated  = record(old, executed)
+  satisfying(updated)
   habits.updated(index, updated)
 
 

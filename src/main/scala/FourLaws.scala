@@ -13,3 +13,17 @@ def dailyPlan(list: List[Habit]): Unit =
 def attractive(habit: Habit): Unit =
   habit.identity.foreach(i => println(s"Vote for: $i"))
   habit.reward.foreach(r => println(s"Reward afterwards: $r"))
+
+def record(habit: Habit, executed: Boolean): Habit =
+  if executed then
+    habit.copy(
+      success = habit.success + 1,
+      reps = habit.reps + 1,
+      missedInRow = 0
+    )
+  else
+    habit.copy(
+      failure = habit.failure + 1,
+      reps = habit.reps + 1,
+      missedInRow = habit.missedInRow + 1
+    )

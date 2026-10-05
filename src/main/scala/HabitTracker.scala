@@ -92,21 +92,9 @@ def trackHabit(habits: List[Habit], index: Int): List[Habit] =
   val old = habits(index)
   attractive(old)
   val executed = confirm("Got Excecuted? (Y/n)")
-  if !executed then {
-    val updated = old.copy(
-      failure = old.failure + 1,
-      success = old.success + 0,
-      reps    = old.reps    + 1
-    )
-    habits.updated(index, updated)
-  } else {
-    val updated = old.copy(
-      failure = old.failure + 0,
-      success = old.success + 1,
-      reps    = old.reps    + 1
-    )
-    habits.updated(index, updated)
-  }
+  val updated  = record(old, executed)
+  habits.updated(index, updated)
+
 
 @tailrec
 def gotExecuted(): Boolean =

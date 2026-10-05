@@ -90,8 +90,9 @@ def askOpt(label: String, current: Option[String]) =
 
 def trackHabit(habits: List[Habit], index: Int): List[Habit] =
   val old = habits(index)
+  neverMissTwice(old)
   attractive(old)
-  val executed = confirm("Got Excecuted? (Y/n)")
+  val executed = confirm("Got Excecuted? (Y/n)") || easyFallback(old)
   val updated  = record(old, executed)
   satisfying(updated)
   habits.updated(index, updated)

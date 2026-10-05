@@ -33,3 +33,12 @@ def satisfying(habit: Habit): Unit =
 
 def successRate(habit: Habit): Int =
   if habit.reps == 0 then 0 else habit.success * 100 / habit.reps
+
+def neverMissTwice(habit: Habit): Unit =
+  if habit.missedInRow >= 1 then println("You missed last time. Never miss twice.")
+
+def easyFallback(habit: Habit): Boolean =
+  habit.miniVersion.exists(m =>
+    confirm(s"Did you at least do the two-minute version ($m)? (Y/n) ")
+  )
+

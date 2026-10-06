@@ -87,4 +87,3 @@ Enter one of `tag`, `place`, `time` (or `when`), `name`, then the value. Matchin
 - Habits are lost when the program ends (no saving).
 - Only counters are stored, with no dates, so there are no streaks or history.
 - The daily plan lists all habits, since habits have no schedule.
-- The menu has no exit option.
